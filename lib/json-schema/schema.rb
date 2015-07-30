@@ -48,6 +48,17 @@ module JSON
       end
     end
 
+    def self.wrap(schema, schema_uri, options={})
+      schema =
+        case schema
+        when Hash then JSON::Schema.new(schema, schema_uri, options[:version])
+        when Array then schema.map { |item| JSON::Schema.new(item, schema_uri, options[:version]) }
+        else schema
+        end
+
+      options[:list] ? schema.to_array_schema : schema
+    end
+
     # @return [JSON::Schema] a new schema matching an array whose items all match this schema.
     def to_array_schema
       array_schema = { 'type' => 'array', 'items' => schema }

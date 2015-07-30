@@ -104,11 +104,7 @@ module JSON
         end
       end
 
-      if @options[:list]
-        base_schema.to_array_schema
-      else
-        base_schema
-      end
+      JSON::Schema.wrap base_schema, schema_uri, @options
     end
 
     # Run a simple true/false validation of data against a schema
